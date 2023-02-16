@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Product\IndexController;
 
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// я хз чо они не работают
+//  Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-// Route::post('/me', [AuthController::class, 'me']);
 Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
-
+Route::group(['namespace' => 'App\Http\Controllers\Product'], function () {
+    Route::get('/products', IndexController::class);
+});
 
 
