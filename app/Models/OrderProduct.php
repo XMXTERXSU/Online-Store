@@ -11,7 +11,7 @@ class OrderProduct extends Model
 
     protected $guarded = false;
 
-    public function product() {
+    public function products() {
         return $this->belongsTo(Product::class);
     }
 }

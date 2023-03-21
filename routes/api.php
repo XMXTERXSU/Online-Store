@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Product\IndexController;
 
 
 /*
@@ -26,8 +25,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
-Route::group(['namespace' => 'App\Http\Controllers\Product'], function () {
-    Route::get('/products', IndexController::class);
-});
+
+
+
 
 

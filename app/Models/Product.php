@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     protected $guarded = false;
-    protected $table = 'products';
 
     use HasFactory, SoftDeletes, Filterable;
 
@@ -21,7 +20,8 @@ class Product extends Model
         $this->belongsTo(Category::class);
     }
 
-    public function cart(){
-        $this->belongsToMany(CartProduct::class)->withPivot('quantity');
+    public function carts()
+    {
+        $this->belongsToMany(CartProduct::class);
     }
 }

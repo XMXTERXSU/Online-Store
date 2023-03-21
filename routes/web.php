@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +17,17 @@ use App\Http\Controllers\Cart\CartController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'welcome');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+Route::group(['namespace' => 'App\Http\Controllers\Product'], function () {
+    Route::get('/products', IndexController::class);
+});
 
+Route::get('/cart', [CartController::class, 'index']);
+Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.blade');
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
+Route::patch('/cart/update/{id}', [CartController::class, 'update']);
