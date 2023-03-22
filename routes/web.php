@@ -29,5 +29,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Product'], function () {
 
 Route::get('/cart', [CartController::class, 'index']);
 Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.blade');
-Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
 Route::patch('/cart/update/{id}', [CartController::class, 'update']);
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
+Route::get('/cart/order', [CartController::class, 'order']);

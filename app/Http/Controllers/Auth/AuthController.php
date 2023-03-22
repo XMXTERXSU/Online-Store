@@ -37,13 +37,12 @@ class AuthController extends AuthBaseController
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        session(['user_id' => $user->id]);
-
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Berear',
             'user_id' => $user->id
         ]);
+
     }
 
     public function me(Request $request)

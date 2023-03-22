@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'session_id', 'product_id',
+        'session_id', 'product_id', 'user_id',
         'quantity', 'price',
     ];
 
@@ -23,7 +24,6 @@ class Cart extends Model
     public static function add($product_id)
     {
         $product = Product::findOrFail($product_id);
-
         if ($cart = self::where(['session_id' => session()->getId(), 'product_id' => $product_id])->first()) {
             $cart->quantity++;
             $cart->save();
@@ -34,7 +34,7 @@ class Cart extends Model
                 'product_id' => $product->id,
                 'quantity' => 1,
                 'price' => $product->price,
-                'user_id' => session('user_id') ?? ''
+                'user_id' => Auth::id()
             ]);
 
             return $cart;
@@ -59,7 +59,6 @@ class Cart extends Model
 
         return $cart;
     }
-
 
     public function products()
     {
