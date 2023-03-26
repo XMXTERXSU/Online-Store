@@ -12,10 +12,10 @@ class Order extends Model
 
     protected $fillable = [
         'name', 'email', 'phone_number',
-        'cart_id',
+        'session_id', 'user_id'
     ];
 
-    public function products(){
-        $this->hasMany(OrderProduct::class);
+    public function cart(){
+        $this->belongsTo(Cart::class);
     }
 }

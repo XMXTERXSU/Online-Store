@@ -45,22 +45,21 @@ class CartController extends Controller
     public function order(OrderRequest $request)
     {
         $data = $request->validated();
-        $cart = Cart::get();
-        dd($cart);
         $user = $request->user();
         if (Auth::check()) {
             $order = Order::create([
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone_number' => $user->phone_number,
-                'cart_id' => $cart->id,
+                'session_id' => session()->getId(),
+                'user_id' => $user()->id
             ]);
         } else {
             $order = Order::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone_number' => $data['phone_number'],
-                'cart_id' => $cart->id,
+                'session_id' => session()->getId(),
             ]);
         }
         return response()->json($order);

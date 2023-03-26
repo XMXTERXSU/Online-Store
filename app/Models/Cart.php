@@ -11,14 +11,21 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'session_id', 'product_id', 'user_id',
-        'quantity', 'price',
+        'session_id',
+        'product_id',
+        'user_id',
+        'quantity',
+        'price',
     ];
 
 
     public static function get()
     {
-        return self::where(['session_id' => session()->getId()])->get();
+        if (Auth::check()) {
+            return self::where(['user_id' => Auth::id()])->get();
+        } else {
+            return self::where(['session_id' => session()->getId()])->get();
+        }
     }
 
     public static function add($product_id)
