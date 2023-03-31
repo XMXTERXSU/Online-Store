@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Order\OrderRequest;
 use App\Http\Resources\Cart\CartResource;
+use App\Http\Requests\Cart\QuantityRequest;
+use App\Http\Resources\Order\OrderResource;
 
 class CartController extends Controller
 {
@@ -25,21 +27,23 @@ class CartController extends Controller
 
     public function remove($id = null)
     {
+        $cart = Cart::where(['session_id' => session()->getId(), 'product_id' => $id])->first();
         if ($id) {
-            Cart::remove($id);
+            $cart->remove($id);
+        } else {
+            $cart->destroy($id);
         }
-        else {
-            Cart::destroy($id);
-        }
+        return redirect()->route('cart');
     }
 
-    public function update(Request $request)
+    public function update($id)
     {
-        $data = $request->validate([
-            'id' => '',
-            'quantity' => ''
+        $cart = Cart::where(['session_id' => session()->getId(), 'product_id' => $id])->first();
+        $data = request()->validate([
+            'quantity' => 'integer'
         ]);
-        Cart::quantity($data['id'], $data['quantity']);
+        $cart->quantity($id, $data['quantity']);
+        return redirect()->route('cart');
     }
 
     public function order(OrderRequest $request)
@@ -63,5 +67,12 @@ class CartController extends Controller
             ]);
         }
         return response()->json($order);
+    }
+
+    public function orderList()
+    {
+        $order = Order::get();
+
+        return OrderResource::collection($order);
     }
 }

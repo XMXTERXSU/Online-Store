@@ -50,7 +50,8 @@ class Cart extends Model
 
     public static function remove($id)
     {
-        return self::destroy($id);
+        $cart = self::where(['session_id' => session()->getId(), 'product_id' => $id])->first();
+        return $cart->delete();
     }
 
     public static function quantity($id, $quantity)
